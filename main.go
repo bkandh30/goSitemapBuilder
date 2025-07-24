@@ -15,7 +15,15 @@ func main() {
 
 	fmt.Println(*urlFlag)
 
-	resp, err := http.Get(*urlFlag)
+	pages := get(*urlFlag)
+	for _, page := range pages {
+		fmt.Println(page)
+	}
+
+}
+
+func get(urlStr string) []string {
+	resp, err := http.Get(urlStr)
 	if err != nil {
 		panic(err)
 	}
@@ -30,12 +38,7 @@ func main() {
 
 	base := baseUrl.String()
 
-	pages := hrefs(resp.Body, base)
-
-	for _, page := range pages {
-		fmt.Println(page)
-	}
-
+	return filter(hrefs(resp.Body, base), withPrefix(base))
 }
 
 func hrefs(r io.Reader, base string) []string {
@@ -52,9 +55,23 @@ func hrefs(r io.Reader, base string) []string {
 		}
 	}
 
-	for _, href := range ret {
-		fmt.Println(href)
+	return ret
+}
+
+func filter(links []string, keepFn func(string) bool) []string {
+	var ret []string
+
+	for _, link := range links {
+		if keepFn(link) {
+			ret = append(ret, link)
+		}
 	}
 
 	return ret
+}
+
+func withPrefix(pfx string) func(string) bool {
+	return func(link string) bool {
+		return strings.HasPrefix(link, pfx)
+	}
 }
