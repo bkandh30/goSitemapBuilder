@@ -16,10 +16,10 @@ go mod tidy
 
 ### Command-Line Options
 
-| Flag     | Description                 | Default Value             | Example                      |
-| :------- | :-------------------------- | :------------------------ | :--------------------------- |
-| `-url`   | Target website URL to crawl | `https://gophercises.com` | `-url="https://example.com"` |
-| `-depth` | Maximum crawling depth      | `5`                       | `-depth=5`                   |
+| Flag     | Description                 | Default Value                        | Example                      |
+| :------- | :-------------------------- | :----------------------------------- | :--------------------------- |
+| `-url`   | Target website URL to crawl | `https://bhavyakandhari.vercel.app/` | `-url="https://example.com"` |
+| `-depth` | Maximum crawling depth      | `5`                                  | `-depth=5`                   |
 
 ### Basic Usage
 

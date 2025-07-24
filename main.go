@@ -23,7 +23,7 @@ type urlSet struct {
 }
 
 func main() {
-	urlFlag := flag.String("url", "https://gophercises.com", "URL for Sitemap")
+	urlFlag := flag.String("url", "https://bhavyakandhari.vercel.app/", "URL for Sitemap")
 	maxDepth := flag.Int("depth", 5, "Maximum number of links deep to traverse")
 	flag.Parse()
 
