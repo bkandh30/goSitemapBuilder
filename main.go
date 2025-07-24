@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io"
 	"net/http"
-	"os"
+	"net/url"
+	"strings"
 )
 
 func main() {
@@ -21,5 +21,29 @@ func main() {
 
 	defer resp.Body.Close()
 
-	io.Copy(os.Stdout, resp.Body)
+	reqUrl := resp.Request.URL
+	baseUrl := &url.URL{
+		Scheme: reqUrl.Scheme,
+		Host:   reqUrl.Host,
+	}
+
+	base := baseUrl.String()
+
+	links, _ := Parse(resp.Body)
+
+	var hrefs []string
+
+	for _, l := range links {
+		switch {
+		case strings.HasPrefix(l.Href, "/"):
+			hrefs = append(hrefs, base+l.Href)
+		case strings.HasPrefix(l.Href, "http"):
+			hrefs = append(hrefs, l.Href)
+		}
+	}
+
+	for _, href := range hrefs {
+		fmt.Println(href)
+	}
+
 }
